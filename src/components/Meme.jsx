@@ -14,12 +14,15 @@ export default function Meme(){
     const[allMeme, setAllMeme] = React.useState([])
 
 
-    //API - get data from APIs
-    React.useEffect(() => {(
-        fetch("https://api.imgflip.com/get_memes")
-        .then(res => res.json())
-        .then(data => setAllMeme(data.data.memes))
-    )},[])
+    //API - get data from APIs and intrducing async function
+    React.useEffect(() => {
+        async function getMemes() {
+            const res = await fetch("https://api.imgflip.com/get_memes")
+            const data = await res.json()
+            setAllMemes(data.data.memes)
+        }
+        getMemes()
+    }, [])
     
     function getMemeImage() {
         //const memesArray = allMemeImages.data.memes
