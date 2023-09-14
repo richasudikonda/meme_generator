@@ -1,5 +1,5 @@
 import React from "react";
-import memesData from "../memesData"
+//import memesData from "../memesData" -- before getting the code from API we are fetchig the same from the memedata.jsx file
 
 export default function Meme(){
     //const [memeImage, setMemeImage] = React.useState("http://i.imgflip.com/1bij.jpg")
@@ -10,12 +10,21 @@ export default function Meme(){
         randomImage: "http://i.imgflip.com/1bij.jpg",
     })
 
-    const[allMemeImages, setAllMemeImages] = React.useState(memesData)
+    //const[allMeme, setAllMeme] = React.useState(memesData)
+    const[allMeme, setAllMeme] = React.useState([])
+
+
+    //API - get data from APIs
+    React.useEffect(() => {(
+        fetch("https://api.imgflip.com/get_memes")
+        .then(res => res.json())
+        .then(data => setAllMeme(data.data.memes))
+    )},[])
     
     function getMemeImage() {
-        const memesArray = allMemeImages.data.memes
-        const randomNumber = Math.floor(Math.random() * memesArray.length)
-        const url = memesArray[randomNumber].url
+        //const memesArray = allMemeImages.data.memes
+        const randomNumber = Math.floor(Math.random() * allMeme.length)
+        const url = allMeme[randomNumber].url
         setMeme(prevMeme => {
             return{
                 ...prevMeme,
@@ -54,7 +63,8 @@ export default function Meme(){
                 />
                 <button 
                     className="form--button"
-                    onClick={getMemeImage}>
+                    onClick={getMemeImage}
+                    >
                     Get a new meme image 🖼
                 </button>
             </div>
